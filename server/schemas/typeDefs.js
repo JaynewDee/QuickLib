@@ -1,6 +1,8 @@
-const { gql } = require('apollo-server-express');
+const {
+     gql
+} = require('apollo-server-express');
 
-const typeDefs = gql`
+const typeDefs = gql `
      type User {
           _id: ID
           username: String
@@ -8,7 +10,6 @@ const typeDefs = gql`
           password: String
           savedBooks: [Book]!
      }
-     # Not sure about bookId here, may need to change to key defined by auto-increment
      type Book {
           authors: [String]
           description: String
@@ -18,7 +19,11 @@ const typeDefs = gql`
           title: String
      }
      type Query {
-          _dummy: String
+          users: [User]
+          books: [Book]
+     }
+     type Mutation {
+          createUser(username: String!, email: String!, password: String!): User
      }
 `;
 
