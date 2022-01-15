@@ -24,7 +24,6 @@ const SearchBooks = () => {
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
     if (!searchInput) {
       return false;
     }
@@ -57,18 +56,17 @@ const SearchBooks = () => {
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
+    console.log(bookId)
 
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+    console.log(token)
     if (!token) {
       return false;
     }
 
     try {
-      const { data } = await saveBook({
-        variables: { bookId }
-      });
+      const { data } = await saveBook({});
 
       if (!data) {
         throw new Error('something went wrong!');
