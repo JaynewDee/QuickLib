@@ -1,14 +1,15 @@
 // see SignupForm.js for comments
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-import { useMutation } from '@apollo/client'
-import { LOGIN_USER } from '../utils/mutations'
+import { Link } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../utils/mutations';
 
 import Auth from '../utils/auth';
 
 const LoginForm = (props) => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
-  const [login, { err, data }] = useMutation(LOGIN_USER)
+  const [login, { error, data }] = useMutation(LOGIN_USER)
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -26,11 +27,12 @@ const LoginForm = (props) => {
       event.preventDefault();
       event.stopPropagation();
     }
-
+    console.log(userFormData)
     try {
       const { data } = await login({
         variables: {...userFormData},
       })
+      console.log(data)
 
       Auth.login(data.login.token)
 
@@ -48,6 +50,11 @@ const LoginForm = (props) => {
 
   return (
     <>
+    {data ? (
+      <p>
+        Success! You may now head {' '}
+        <Link to="/">back to the homepage.</Link>
+      </p>) : (
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your login credentials!
@@ -84,6 +91,12 @@ const LoginForm = (props) => {
           Submit
         </Button>
       </Form>
+      )}
+      {error && (
+        <p>
+          {error.message}
+        </p>
+      )}
     </>
   );
 };

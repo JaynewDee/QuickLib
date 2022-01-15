@@ -8,8 +8,11 @@ export const QUERY_USER = gql`
           username
           email
           savedBooks {
-            description
             title
+            authors
+            description
+            image
+            link
           }
         }
    }

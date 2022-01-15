@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 import { QUERY_USER } from '../utils/queries'
 import { deleteBook } from '../utils/API';
@@ -8,7 +8,9 @@ import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   
-  const { loading, data } = useQuery(QUERY_USER)
+  const { loading, data } = useQuery(QUERY_USER, {
+    variables: {username: this.username}
+  })
   const user = data?.savedBooks || [];
   const [userData, setUserData] = useState({});
 
@@ -24,10 +26,6 @@ const SavedBooks = () => {
           return false;
         }
 
-        const { data } = await user({
-          variables: { ...userData }
-        })
-        const userJson = await user.json()
         console.log(userData)
 
         setUserData(user);
