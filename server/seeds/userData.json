@@ -2,7 +2,8 @@
      {
           "username": "jdiehl2236",
           "email": "jdiehl2236@gmail.com",
-          "password": "password123"
+          "password": "password123",
+          "savedBooks": [null]
      },
      {
           "username": "misstristy",

@@ -30,7 +30,10 @@ const LoginForm = (props) => {
     console.log(userFormData)
     try {
       const { data } = await login({
-        variables: {...userFormData},
+        variables: {
+          email: userFormData.email,
+          password: userFormData.password
+        },
       })
       console.log(data)
 

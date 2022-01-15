@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
-import { QUERY_USER } from '../utils/queries'
-import { deleteBook } from '../utils/API';
+import { QUERY_USER } from '../utils/queries';
+import { DELETE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   
-  const { loading, data } = useQuery(QUERY_USER, {
-    variables: {username: this.username}
-  })
-  const user = data?.savedBooks || [];
+
+  
   const [userData, setUserData] = useState({});
+  const { data } = useQuery(QUERY_USER, {
+    variables: {username: userData.username}
+  })
+  const user = data?.savedBooks;
+  const [deleteBook] = useMutation(DELETE_BOOK);
+
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
@@ -35,7 +39,7 @@ const SavedBooks = () => {
     };
 
     getUserData();
-  }, [userDataLength]);
+  }, [userData]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -46,14 +50,13 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await deleteBook(bookId, token);
+      const { bookData } = await deleteBook({
+        variables: { bookId: bookData._id }
+      });
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const updatedUser = await response.json();
-      setUserData(updatedUser);
+      
+   
+      setUserData(bookData);
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {
@@ -63,7 +66,11 @@ const SavedBooks = () => {
 
   // if data isn't here yet, say so
   if (!userDataLength) {
-    return <h2>LOADING...</h2>;
+    return (
+      <div>
+
+      </div>
+    )
   }
 
   return (
