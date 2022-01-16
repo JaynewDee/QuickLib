@@ -43,7 +43,7 @@ const LoginForm = (props) => {
       console.error(err);
       setShowAlert(true);
     }
-
+    
     setUserFormData({
       username: '',
       email: '',

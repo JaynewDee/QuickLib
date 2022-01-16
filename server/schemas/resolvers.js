@@ -6,6 +6,7 @@ const {
 const { signToken } = require('../utils/auth')
 
 
+// Should get books to save before relying on population
 const resolvers = {
      Query: {
           user: async () => {
