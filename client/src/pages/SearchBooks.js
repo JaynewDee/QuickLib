@@ -27,25 +27,26 @@ const SearchBooks = () => {
     if (!searchInput) {
       return false;
     }
-
     try {
       const response = await searchGoogleBooks(searchInput);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
-
+      
       const { items } = await response.json();
-
       const bookData = items.map((book) => ({
         bookId: book.id,
-        authors: book.volumeInfo.authors || ['No author to display'],
+        authors: book.volumeInfo.authors,
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
+        link: book.volumeInfo.infoLink
       }));
+      console.log(bookData)
 
       setSearchedBooks(bookData);
+      
       setSearchInput('');
     } catch (err) {
       console.error(err);
@@ -56,18 +57,19 @@ const SearchBooks = () => {
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-    console.log(bookId)
-
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    console.log(token)
     if (!token) {
       return false;
     }
 
     try {
-      const { data } = await saveBook({bookToSave, token});
-
+      const { data } = await saveBook({
+        variables: {
+          ...bookToSave
+        }  
+      });
+      console.log(bookToSave)
       if (!data) {
         throw new Error('something went wrong!');
       }

@@ -9,13 +9,34 @@ const { signToken } = require('../utils/auth')
 // Should get books to save before relying on population
 const resolvers = {
      Query: {
-          user: async () => {
-               return await User.findOne({
-                    username
-               }).populate({savedBooks})
+          user: async (username) => {
+               return await User.findOne({username: username})
           },
+          users: async () => {
+               return await User.find({})
+          },
+          book: async ({bookId}) => {
+               return await Book.findOne({bookId})
+          },
+          books: async () => {
+               return await Book.find({}).populate('user')
+          }
      },
      Mutation: {
+          login: async (parent, { email, password }, context) => {
+               const user = await User.findOne({email});
+               if (!user) {
+                    throw new AuthenticationError('No user found with this email address')
+               }
+               const correctPw = await user.isCorrectPassword(password);
+
+               if (!correctPw) {
+                    throw new AuthenticationError('Incorrect credentials');
+               }
+               console.log(context.user)
+               const token = signToken(user);
+               return { token, user };
+          },
           createUser: async (parent, {
                username,
                email,
@@ -29,37 +50,27 @@ const resolvers = {
                const token = signToken(user);
                return { token, user};
           },
-          login: async (parent, { email, password }) => {
-               const user = await User.findOne({email});
-
-               if (!user) {
-                    throw new AuthenticationError('No user found with this email address')
-               }
-               const correctPw = await user.isCorrectPassword(password);
-
-               if (!correctPw) {
-                    throw new AuthenticationError('Incorrect credentials');
-               }
-
-               const token = signToken(user);
-
-               return { token, user };
-          },
-          saveBook: async (parent, { bookId }, context) => {
+          saveBook: async (parent, { bookId, authors, title, description, image, link }, context) => {
                if (context.user) {
-                    const book = await Book.create({
-                         bookId: bookId,
-                         authors: book.volumeInfo.authors || ['No author to display'],
-                         title: book.volumeInfo.title,
-                         description: book.volumeInfo.description,
-                         image: book.volumeInfo.imageLinks?.thumbnail
-                    });
-
-                    await User.findOneAndUpdate(
+                    return await User.findOneAndUpdate(
                          { _id: context.user._id},
-                         { $addToSet: { savedBooks: book._id }}
+                         { 
+                              $addToSet: {
+                               savedBooks: { 
+                                    bookId, 
+                                    authors, 
+                                    title, 
+                                    description, 
+                                    image, 
+                                    link
+                                   },
+                              },
+                         },
+                         {
+                              new: true,
+                              runValidators: true
+                         }
                     );
-                    return book;
                }
                throw new AuthenticationError('You need to be logged in!')
           },

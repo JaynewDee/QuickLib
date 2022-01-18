@@ -1,13 +1,27 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink} from '@apollo/client'
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink, from} from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import { onError } from '@apollo/client/link/error'
 import SearchBooks from './pages/SearchBooks';
 import SavedBooks from './pages/SavedBooks';
 import Navbar from './components/Navbar';
 
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+      ),
+    );
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
 const httpLink = createHttpLink({
   uri: 'http://localhost:3001/graphql',
+  
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -24,7 +38,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: from([ authLink, errorLink, httpLink]),
   cache: new InMemoryCache()
 })
 
@@ -36,7 +50,7 @@ function App() {
           <Navbar />
           <Switch>
             <Route exact path='/' component={SearchBooks} />
-            <Route exact path='/saved' component={SavedBooks} />
+            <Route exact path='/saved/:username' component={SavedBooks} />
             <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
           </Switch>
         </>
