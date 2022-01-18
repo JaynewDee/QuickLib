@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { useParams } from 'react-router-dom';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 import { QUERY_USER } from '../utils/queries';
 import { DELETE_BOOK } from '../utils/mutations';
@@ -8,29 +7,33 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 
+
 const SavedBooks = () => {
+  const { loading, data, error } = useQuery(QUERY_USER, {
+    variables: {  }
+  })
+  const token = Auth.getProfile();
+  console.log(token);
   const [userData, setUserData] = useState({});
+  console.log(userData)
+
+  const user = data?.savedBooks || {}
 
   const [deleteBook] = useMutation(DELETE_BOOK);
-  
-  const { loading, data, error } = useQuery(QUERY_USER, {
-    variables: { username: Auth.getProfile().payload },
-    pollInterval: 1000,
-  })
-  const user = data || {};
+
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
+  console.log(userData)
   
   useEffect(() => {
     const getUserData = () => {
       try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
-        
+        console.log(token)
         if (!token) {
           return false;
         }
         setUserData(user);
-
       } catch (err) {
         console.error(err);
       };
@@ -78,6 +81,7 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
+          {this.props.match.params.username}
           {userData.savedBooks.length
             ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}

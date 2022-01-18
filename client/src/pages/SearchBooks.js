@@ -15,10 +15,11 @@ const SearchBooks = () => {
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
   const [saveBook] = useMutation(SAVE_BOOK);
-
+  const [savedBook, setSavedBook] = useState()
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   useEffect(() => {
-    return () => saveBookIds(savedBookIds);
+    return () => 
+      saveBookIds(savedBookIds)
   });
 
   // create method to search for books and set state on form submit
@@ -33,7 +34,7 @@ const SearchBooks = () => {
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
-      
+      // Handles parsing of data from all search results
       const { items } = await response.json();
       const bookData = items.map((book) => ({
         bookId: book.id,
@@ -62,14 +63,14 @@ const SearchBooks = () => {
     if (!token) {
       return false;
     }
-
+    setSavedBook(bookToSave)
     try {
       const { data } = await saveBook({
         variables: {
-          ...bookToSave
+          ...savedBook
         }  
       });
-      console.log(bookToSave)
+      console.log(data)
       if (!data) {
         throw new Error('something went wrong!');
       }

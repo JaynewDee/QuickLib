@@ -7,8 +7,8 @@ import { CREATE_USER } from '../utils/mutations'
 const SignupForm = () => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
-  // set state for form validation
   const [createUser] = useMutation(CREATE_USER)
+  // set state for form validation
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
@@ -39,7 +39,7 @@ const SignupForm = () => {
       console.error(err);
       setShowAlert(true);
     }
-
+    
     setUserFormData({
       username: '',
       email: '',
