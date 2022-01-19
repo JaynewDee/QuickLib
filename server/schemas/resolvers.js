@@ -19,7 +19,7 @@ const resolvers = {
                }).populate('savedBooks')
           },
           users: async () => {
-               return await User.find({})
+               return await User.find({}).populate('books')
           },
           book: async ({
                bookId
@@ -74,34 +74,27 @@ const resolvers = {
                     user
                }
           },
-          saveBook: async (parent, {
-               bookId,
-               authors,
-               title,
-               description,
-               image,
-               link
-          }, context) => {
+          saveBook: async (parent, {bookId, title, description, image, link, authors}, context) => {
                if (context.user) {
-                    return await User.findOneAndUpdate({
+                   await User.findOneAndUpdate({
                          _id: context.user._id
                     }, {
                          $addToSet: {
                               savedBooks: {
-                                        bookId,
-                                        authors,
-                                        title,
-                                        description,
-                                        image,
-                                        link
+                                  bookId,
+                                  title,
+                                  description,
+                                  image,
+                                  link,
+                                  authors
                               }
                          },
                     },
                     {
                          new: true,
-                         rawResult: true
+                         runValidators: true
                     });
-                    
+                    return User
                }
                throw new AuthenticationError('You need to be logged in!')
           },

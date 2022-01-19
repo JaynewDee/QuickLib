@@ -10,10 +10,9 @@ import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   const { loading, data, error } = useQuery(QUERY_USER, {
-    variables: {  }
+    variables: { username: Auth.getProfile().data.username }
   })
-  const token = Auth.getProfile();
-  console.log(token);
+
   const [userData, setUserData] = useState({});
   console.log(userData)
 
