@@ -3,33 +3,20 @@ const {
 } = require('apollo-server-express')
 const {
      User,
-     Book
 } = require('../models');
 const {
      signToken
 } = require('../utils/auth')
 
 
-// Should get books to save before relying on population
 const resolvers = {
      Query: {
-          user: async (username) => {
-               return await User.findOne({
-                    username: username
-               }).populate('savedBooks')
+          user: async (parent, args, context) => {
+               console.log(context.query)
+               return await User.findOne({username: context.user.username}).populate('savedBooks')
           },
           users: async () => {
-               return await User.find({}).populate('books')
-          },
-          book: async ({
-               bookId
-          }) => {
-               return await Book.findOne({
-                    bookId
-               })
-          },
-          books: async () => {
-               return await Book.find({}).populate('user')
+               return await User.find({}).populate('savedBooks')
           }
      },
      Mutation: {
@@ -58,14 +45,12 @@ const resolvers = {
           createUser: async (parent, {
                username,
                email,
-               password,
-               savedBooks
+               password
           }) => {
                const user = await User.create({
                     username,
                     email,
-                    password,
-                    savedBooks
+                    password
                });
                console.log(user)
                const token = signToken(user);
@@ -74,27 +59,19 @@ const resolvers = {
                     user
                }
           },
-          saveBook: async (parent, {bookId, title, description, image, link, authors}, context) => {
+          saveBook: async (parent, book, context) => {
                if (context.user) {
-                   await User.findOneAndUpdate({
-                         _id: context.user._id
-                    }, {
-                         $addToSet: {
+                    console.log(book)
+                    const user = await User.findByIdAndUpdate(context.user._id,
+                    {
+                         $push: {
                               savedBooks: {
-                                  bookId,
-                                  title,
-                                  description,
-                                  image,
-                                  link,
-                                  authors
+                                  ...book
                               }
                          },
                     },
-                    {
-                         new: true,
-                         runValidators: true
-                    });
-                    return User
+               );
+                    return { user }
                }
                throw new AuthenticationError('You need to be logged in!')
           },

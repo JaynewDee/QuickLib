@@ -9,35 +9,33 @@ import { removeBookId } from '../utils/localStorage';
 
 
 const SavedBooks = () => {
-  const { loading, data, error } = useQuery(QUERY_USER, {
-    variables: { username: Auth.getProfile().data.username }
-  })
-
+  const { data } = useQuery(QUERY_USER)
   const [userData, setUserData] = useState({});
   console.log(userData)
-
+  
   const user = data?.savedBooks || {}
 
   const [deleteBook] = useMutation(DELETE_BOOK);
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
-  console.log(userData)
+  console.log(user)
   
   useEffect(() => {
+  
     const getUserData = () => {
       try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
-        console.log(token)
         if (!token) {
           return false;
-        }
-        setUserData(user);
+        };
       } catch (err) {
         console.error(err);
       };
     };
     getUserData()
+    setUserData(user)
+
   }, [userDataLength]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
@@ -69,8 +67,7 @@ const SavedBooks = () => {
       </div>
     )
   }
-  if (loading) return null;
-  if (error) return `Error!: ${error}`;
+ 
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
@@ -80,7 +77,6 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {this.props.match.params.username}
           {userData.savedBooks.length
             ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}

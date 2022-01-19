@@ -9,7 +9,7 @@ const bookSchema = new Schema({
   ],
   description: {
     type: String,
-    required: false,
+    required: true,
   },
   // saved book id from GoogleBooks
   bookId: {
@@ -24,10 +24,8 @@ const bookSchema = new Schema({
   },
   title: {
     type: String,
-    required: false,
+    required: true,
   },
 });
 
-const Book = model('Book', bookSchema);
-
-module.exports = {Book, bookSchema};
+module.exports = bookSchema
