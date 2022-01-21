@@ -11,12 +11,14 @@ import { removeBookId } from '../utils/localStorage';
 const SavedBooks = () => {
   const { data, error, loading } = useQuery(QUERY_USER);
   console.log({data, loading, error})
-  if (error)
-   throw(new Error("Something went wrong @ useQuery QUERY_USER"))
+  if (error) {
+   throw(new Error("Something went wrong @ useQuery QUERY_USER"))}
+
   const [userData, setUserData] = useState({});
   console.log(userData)
   
-  const user = data?.savedBooks || {}
+  const user = data?.user || {}
+
 
   const [deleteBook] = useMutation(DELETE_BOOK);
 
@@ -32,12 +34,14 @@ const SavedBooks = () => {
         if (!token) {
           return false;
         };
+        
+
       } catch (err) {
         console.error(err);
       };
     };
-    getUserData()
     setUserData(user)
+    getUserData()
 
   }, [userDataLength]);
 

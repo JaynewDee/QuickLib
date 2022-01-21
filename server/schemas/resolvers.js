@@ -14,7 +14,7 @@ const resolvers = {
      Query: {
           user: async (parent, args, context) => {
                console.log(context.query)
-               return await User.findOne({username: context.user.username}).populate('savedBooks')
+               return await User.findById({_id: context.user._id}).populate('savedBooks')
           },
           users: async () => {
                return await User.find({}).populate('savedBooks')
