@@ -9,7 +9,10 @@ import { removeBookId } from '../utils/localStorage';
 
 
 const SavedBooks = () => {
-  const { data } = useQuery(QUERY_USER)
+  const { data, error, loading } = useQuery(QUERY_USER);
+  console.log({data, loading, error})
+  if (error)
+   throw(new Error("Something went wrong @ useQuery QUERY_USER"))
   const [userData, setUserData] = useState({});
   console.log(userData)
   

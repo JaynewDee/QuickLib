@@ -14,7 +14,8 @@ const SearchBooks = () => {
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
-  const [saveBook] = useMutation(SAVE_BOOK);
+  const [saveBook, {data}] = useMutation(SAVE_BOOK);
+  console.log(data)
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   useEffect(() => {                                  
     return () => 
@@ -65,16 +66,11 @@ const SearchBooks = () => {
     }
     console.log(bookToSave)
     try {
-      const { data } = await saveBook({
-        variables: {
-          bookId: bookToSave.bookId,
-          title: bookToSave.title,
-          description: bookToSave.description,
-          link: bookToSave.link,
-          image: bookToSave.image,
-          authors: bookToSave.authors,
-         },
+      const {data} = await saveBook({
+         variables:  bookToSave 
       });
+      // Here all fields of "saved" book are again logged as null in the user data returned...
+      console.log(data)
       if (!data) {
         throw new Error('something went wrong!');
       }
