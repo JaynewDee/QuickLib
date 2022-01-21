@@ -67,9 +67,10 @@ const SearchBooks = () => {
     console.log(bookToSave)
     try {
       const {data} = await saveBook({
-         variables:  bookToSave 
+         variables:  bookToSave,
       });
-      // Here all fields of "saved" book are again logged as null in the user data returned...
+      // data comes back here which means the book is 
+      // making it back to the front-end intact...
       console.log(data)
       if (!data) {
         throw new Error('something went wrong!');

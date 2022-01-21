@@ -9,37 +9,29 @@ import { removeBookId } from '../utils/localStorage';
 
 
 const SavedBooks = () => {
-  const { data, error, loading } = useQuery(QUERY_USER);
-  console.log({data, loading, error})
-  if (error)
-   throw(new Error("Something went wrong @ useQuery QUERY_USER"))
-  const [userData, setUserData] = useState({});
-  console.log(userData)
+   const [userData, setUserData] = useState({});
+
+  const { data, error, loading } = useQuery(QUERY_USER, {
+     variables: {
+        username: Auth.getProfile().data.username
+     }
+  });
   
-  const user = data?.savedBooks || {}
+  console.log({data, loading, error})
+  if (error) {
+   throw(new Error("Something went wrong @ useQuery QUERY_USER"))}
+
+
+  
+  const user = data?.user || {}
+
 
   const [deleteBook] = useMutation(DELETE_BOOK);
 
   // use this to determine if `useEffect()` hook needs to run again
-  const userDataLength = Object.keys(userData).length;
-  console.log(user)
+   console.log(user)
+   console.log(userData)
   
-  useEffect(() => {
-  
-    const getUserData = () => {
-      try {
-        const token = Auth.loggedIn() ? Auth.getToken() : null;
-        if (!token) {
-          return false;
-        };
-      } catch (err) {
-        console.error(err);
-      };
-    };
-    getUserData()
-    setUserData(user)
-
-  }, [userDataLength]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -62,15 +54,20 @@ const SavedBooks = () => {
     }
   };
 
-  // if data isn't here yet, say so
-  if (!userDataLength) {
-    return (
-      <div>
+      // const pause = async () => {
+      //    return await new Promise ((resolve, reject)  => {
+      // setTimeout(() => {
+      //          return
+      // }, 2000)
+      //    if (error) {
+      //    reject(new Error("Something went wrong with your promise pause"))
+      // }
+      // resolve(this)
+      // })}
 
-      </div>
-    )
-  }
- 
+      // pause();
+
+  if(!loading) { 
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
@@ -80,12 +77,12 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+          {user.savedBooks.length
+            ? `Viewing ${user.savedBooks.length} saved ${user.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <CardColumns>
-          {userData.savedBooks.map((book) => {
+          {user.savedBooks.map((book) => {
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
@@ -103,7 +100,11 @@ const SavedBooks = () => {
         </CardColumns>
       </Container>
     </>
-  );
-};
+  )} else {
+     return (
+        <div>Waiting on data!</div>
+     )
+  }
+}
 
 export default SavedBooks;

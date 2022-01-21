@@ -12,9 +12,8 @@ const {
 
 const resolvers = {
      Query: {
-          user: async (parent, args, context) => {
-               console.log(context.query)
-               return await User.findOne({username: context.user.username}).populate('savedBooks')
+          user: async (parent, {username}, context) => {
+               return await User.findOne({username})
           },
           users: async () => {
                return await User.find({}).populate('savedBooks')
@@ -68,10 +67,11 @@ const resolvers = {
                     {
                      //  $push /vs/ $addToSet ?
                          $push: {
-                              savedBooks: {book}
+                              savedBooks: [book]
                          },
-                        });
-                    return book;
+                        })
+                        console.log({user, book})
+                    return book
                }
                throw new AuthenticationError('You need to be logged in!')
           },
