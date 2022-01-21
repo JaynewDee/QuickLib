@@ -17,13 +17,13 @@ const SavedBooks = () => {
   const [userData, setUserData] = useState({});
   console.log(userData)
   
-  const user = data?.user || {}
-
+   const user = data?.user.savedBooks || {}
+   setUserData(user)
 
   const [deleteBook] = useMutation(DELETE_BOOK);
 
   // use this to determine if `useEffect()` hook needs to run again
-  const userDataLength = Object.keys(userData).length;
+//   const userDataLength = Ofbject.keys(userData).length;
   console.log(user)
   
   useEffect(() => {
@@ -31,19 +31,20 @@ const SavedBooks = () => {
     const getUserData = () => {
       try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
+        console.log(token)
         if (!token) {
           return false;
         };
-        
+        setUserData(user)
+
 
       } catch (err) {
         console.error(err);
       };
     };
-    setUserData(user)
     getUserData()
 
-  }, [userDataLength]);
+  }, [loading]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -66,15 +67,20 @@ const SavedBooks = () => {
     }
   };
 
-  // if data isn't here yet, say so
-  if (!userDataLength) {
-    return (
-      <div>
+      // const pause = async () => {
+      //    return await new Promise ((resolve, reject)  => {
+      // setTimeout(() => {
+      //          return
+      // }, 2000)
+      //    if (error) {
+      //    reject(new Error("Something went wrong with your promise pause"))
+      // }
+      // resolve(this)
+      // })}
 
-      </div>
-    )
-  }
- 
+      // pause();
+
+  if(user) { 
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
@@ -107,7 +113,11 @@ const SavedBooks = () => {
         </CardColumns>
       </Container>
     </>
-  );
-};
+  )} else {
+     return (
+        <div>Waiting on data!</div>
+     )
+  }
+}
 
 export default SavedBooks;
