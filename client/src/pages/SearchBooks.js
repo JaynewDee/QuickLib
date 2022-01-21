@@ -67,7 +67,7 @@ const SearchBooks = () => {
     console.log(bookToSave)
     try {
       const {data} = await saveBook({
-         variables:  bookToSave 
+         variables:  bookToSave,
       });
       // data comes back here which means the book is 
       // making it back to the front-end intact...

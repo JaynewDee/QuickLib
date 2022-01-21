@@ -12,9 +12,8 @@ const {
 
 const resolvers = {
      Query: {
-          user: async (parent, args, context) => {
-               console.log(context.query)
-               return await User.findById({_id: context.user._id})
+          user: async (parent, {username}, context) => {
+               return await User.findOne({username})
           },
           users: async () => {
                return await User.find({}).populate('savedBooks')
@@ -68,7 +67,7 @@ const resolvers = {
                     {
                      //  $push /vs/ $addToSet ?
                          $push: {
-                              savedBooks: {book}
+                              savedBooks: [book]
                          },
                         })
                         console.log({user, book})
