@@ -12,9 +12,9 @@
 
 ## *Table of Contents*
 ### (*Internal navigation links*)
-- [Features](#features)
-- [Installation](#installation)
+- [Development](#development)
 - [Usage](#usage)
+- [Screenshots](#screenshots)
 - [Credits](#credits)
 - [About the Creator](#about-the-creator)
  
@@ -22,68 +22,42 @@
 ___  
 ___
 ___
-> - ### **CONTENT TITLE**
->>>  *SUBTITLE* <br>
+> - ### **DEVELOPMENT**
+>>>  *What's under the hood?* <br>
 >>>>  
->>>  
->>> 
+>>>  As an exercise in the implementation of Apollo client and Apollo server, this app is primarily meant to demonstrate understanding of and the ability of the developer to refactor another developer's codebase to use different, more current technologies.
+>>>  The refactored app utilizes apollo as state manager and authenticator of dataflow between server and client.  
 ___  
 ___
 ___  
-> - ### **CONTENT TITLE**
->>>  *SUBTITLE* <br>
->>>>  
->>>  
->>> 
-___  
-___
-___  
-> - ### **CONTENT TITLE**
->>>  *SUBTITLE* <br>
->>>>  
->>>  
->>> 
-___  
-___
-___  
-> - ### **CONTENT TITLE**
->>>  *SUBTITLE* <br>
->>>>  
->>>  
->>> 
-___  
-___
-___  
-> - ### **CONTENT TITLE**
->>>  *SUBTITLE* <br>
->>>>  
->>>  
->>> 
-___  
-___
-___  
->> ## ***SUMMARY***  
->>>>  #### *SUBTITLE*  
->>>> 
->>>>  #### 
->>>>  
->>>> -   
->>>> -   
->>>> -   
->>>> -  
->>>> - 
->>>> - 
->>>> - 
 
-## ***CONCLUSION***  
-  ####
-  ####
-  > ####  
-  
->>>>>>>>> --- Joshua <br> <br>
+> - ### **USAGE**
+>>>  *Building a book list* <br>
+>>>>  
+>>>  The user can create an account with QuickLib and login to begin an authenticated session.
+>>> 
+___  
+___
+___  
+> - ### **SCREENSHOTS**
+>>>  *SUBTITLE* <br>
+>>>>  
+>>>  
+>>> 
+___  
+___
+___  
+> - ### **CREDITS**
+>>>  *SUBTITLE* <br>
+>>>>  
+>>>  
+>>> 
+___  
+___
+___  
+<br>
 
-
-## About the Author
+## About the Creator
 
 > ### *Joshua Newell Diehl*
 >>>  
@@ -104,4 +78,3 @@ ___
 >>>
 >>>> ~ *Let's build something awesome.*
 
-mongodb+srv://jaynewdee:!2babytiger2!@cluster0.fwmsg.mongodb.net/quicklib_db?retryWrites=true&w=majority

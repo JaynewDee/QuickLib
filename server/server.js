@@ -1,6 +1,13 @@
 const express = require('express');
 const path = require('path');
 const db = require('./config/connection');
+
+// Configure express
+const app = express();
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+const PORT = process.env.PORT || 3001;
+
 // Configure apollo
 const {
   ApolloServer
@@ -8,26 +15,19 @@ const {
 const {
   typeDefs,
   resolvers
-} = require('./schemas')
+} = require('./schemas');
 const {
   authMiddleware
-} = require('./utils/auth')
+} = require('./utils/auth');
 
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-// Use promise chain to await apollo connection before applying middleware
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: authMiddleware,
 })
-
 server.applyMiddleware({ app });
 
-// Configure express
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+
 
 // if we're in production, serve client/build as static assets
 if (process.env.NODE_ENV === 'production') {
