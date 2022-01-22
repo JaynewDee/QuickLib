@@ -69,7 +69,6 @@ const resolvers = {
                               savedBooks: [book]
                          },
                         })
-                        console.log({user, book})
                     return book
                }
                throw new AuthenticationError('You need to be logged in!')

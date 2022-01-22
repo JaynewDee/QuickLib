@@ -27,7 +27,6 @@ const LoginForm = (props) => {
       event.preventDefault();
       event.stopPropagation();
     }
-    console.log(userFormData)
     try {
       const { data } = await login({
         variables: {

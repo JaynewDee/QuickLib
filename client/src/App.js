@@ -1,26 +1,25 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink, from} from '@apollo/client'
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink} from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { onError } from '@apollo/client/link/error'
 import SearchBooks from './pages/SearchBooks';
 import SavedBooks from './pages/SavedBooks';
 import Navbar from './components/Navbar';
 
+// import { onError } from '@apollo/client/link/error'
+// const errorLink = onError(({ graphQLErrors, networkError }) => {
+//   if (graphQLErrors)
+//     graphQLErrors.forEach(({ message, locations, path }) =>
+//       console.log(
+//         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+//       ),
+//     );
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-      ),
-    );
-
-  if (networkError) console.log(`[Network error]: ${networkError}`);
-});
+//   if (networkError) console.log(`[Network error]: ${networkError}`);
+// });
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3001/graphql',
+  uri: '/graphql',
   
 });
 
@@ -32,13 +31,12 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : '',
-      
     },
   };
 });
 
 const client = new ApolloClient({
-  link: from([ authLink, errorLink, httpLink]),
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 })
 
