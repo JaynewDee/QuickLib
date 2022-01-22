@@ -44,14 +44,27 @@ ___
 > - ### **SCREENSHOTS**
 >>>  *Check it out* <br>
 >>>>  
->>>  
->>> 
+>>>  ![Book search application landing page](/assets/README-imgs/Home.png)  
+___
+>>>  ![Book search application login window](/assets/README-imgs/login.png)
+___
+>>>  ![Book search application signup window](/assets/README-imgs/signup.png)
+___
+>>>  ![Book search application search results](/assets/README-imgs/results.png)
+___
+>>>  ![Book search application saved books page](/assets/README-imgs/saved.png)
+___  
+___
+___  
+> - ### **LIVE**
+>>>  *Deployed on Heroku* <br>
+>>>>  [Link to deployed App](https://infinite-savannah-26277.herokuapp.com/)
 ___  
 ___
 ___  
 > - ### **CREDITS**
 >>>>  - SMU Web Dev Bootcamp for initial codebase
->>>  
+>>>   - The developers @ Apollo, React, Express, and Mongoose ... you are awesome.
 >>> 
 ___  
 ___
@@ -65,8 +78,8 @@ ___
 >>> is a budding developer currently based in Ft Worth, Texas.  He enjoys coding, long romantic hours dead asleep, walks with his dog Margot, and *creepily* referring to himself in third person.  
 >>>>  
 >>>> Here are a few of his favorite technologies at the moment:
->>>> - [Node.js](https://nodejs.org/en/)  
->>>> - [Materialize.css](https://materializecss.com/)  
+>>>> - [Redux](https://redux.js.org/)  
+>>>> - [Apollo](https://www.apollographql.com/)  
 >>>> - [React.js](https://reactjs.org/)  
 >>>> - [MongoDB](https://www.mongodb.com/)  
 >>>>  
