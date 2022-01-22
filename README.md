@@ -25,8 +25,8 @@ ___
 > - ### **DEVELOPMENT**
 >>>  *What's under the hood?* <br>
 >>>>  
->>>  As an exercise in the implementation of Apollo client and Apollo server, this app is primarily meant to demonstrate understanding of and the ability of the developer to refactor another developer's codebase to use different, more current technologies.
->>>  The refactored app utilizes apollo as state manager and authenticator of dataflow between server and client.  
+>>>  - As an exercise in the implementation of Apollo client and Apollo server, this app is primarily meant to demonstrate understanding of and the ability of the developer to refactor another developer's codebase to use different, more current technologies.
+>>>>  - The refactored app utilizes Apollo as state manager and authenticator of dataflow between server and client.  The traditional route-controller architecture of the previous version has been replaced with resolvers on the server end.  The client uses mutation queries defined by GraphQL on the front-end to serve dynamic data to the react-mediated UI.
 ___  
 ___
 ___  
@@ -34,13 +34,15 @@ ___
 > - ### **USAGE**
 >>>  *Building a book list* <br>
 >>>>  
->>>  The user can create an account with QuickLib and login to begin an authenticated session.
->>> 
+>>>  - The user can create an account with QuickLib and login to begin an authenticated session.
+>>>  - The user types search terms into the input field and upon submitting the search the page will populate with the top 10 search results.  
+>>>  - The user clicks the save book button to save any book from the results, and the button deactivates to confirm that the book has been saved.
+>>>  - At any point during an active session, the user clicks on the collapsed hamburger menu to reveal options.  Clicking on the "See Books" option authenticates and redirects the user to a page populated by all books the user has previously saved.
 ___  
 ___
 ___  
 > - ### **SCREENSHOTS**
->>>  *SUBTITLE* <br>
+>>>  *Check it out* <br>
 >>>>  
 >>>  
 >>> 
@@ -48,8 +50,7 @@ ___
 ___
 ___  
 > - ### **CREDITS**
->>>  *SUBTITLE* <br>
->>>>  
+>>>>  - SMU Web Dev Bootcamp for initial codebase
 >>>  
 >>> 
 ___  
