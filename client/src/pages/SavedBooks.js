@@ -20,19 +20,11 @@ const SavedBooks = () => {
   console.log({data, loading, error})
   if (error) {
    throw(new Error("Something went wrong @ useQuery QUERY_USER"))}
-
-
   
   const user = data?.user || {}
 
-
   const [deleteBook] = useMutation(DELETE_BOOK);
-
-  // use this to determine if `useEffect()` hook needs to run again
-   console.log(user)
-   console.log(userData)
   
-
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -53,19 +45,6 @@ const SavedBooks = () => {
       console.error(err);
     }
   };
-
-      // const pause = async () => {
-      //    return await new Promise ((resolve, reject)  => {
-      // setTimeout(() => {
-      //          return
-      // }, 2000)
-      //    if (error) {
-      //    reject(new Error("Something went wrong with your promise pause"))
-      // }
-      // resolve(this)
-      // })}
-
-      // pause();
 
   if(!loading) { 
   return (
